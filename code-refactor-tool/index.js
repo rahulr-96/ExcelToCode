@@ -90,55 +90,6 @@ function yamlToCSharp(yamlFile, outputFile = "Formulas.cs") {
 
     lines.push("    }");
     lines.push("}");
-//     lines.push("\n// -------------------- Helpers --------------------");
-//     lines.push(`
-// public static class ExcelFunctions
-// {
-//     public static double SUM(params double[] values)
-//     {
-//         return values.Sum();
-//     }
-
-//     public static double AVERAGE(params double[] values)
-//     {
-//         return values.Average();
-//     }
-
-//     public static double MIN(params double[] values)
-//     {
-//         return values.Min();
-//     }
-
-//     public static double MAX(params double[] values)
-//     {
-//         return values.Max();
-//     }
-
-//     public static double NPV(double rate, params double[] values)
-//     {
-//         double result = 0.0;
-//         for (int i = 0; i < values.Length; i++)
-//         {
-//             result += values[i] / Math.Pow(1 + rate, i + 1);
-//         }
-//         return result;
-//     }
-
-//      public static double IF(bool condition, double trueVal, double falseVal)
-//     {
-//         return condition ? trueVal : falseVal;
-//     }
-
-//     public static bool AND(params bool[] args)
-//     {
-//         return args.All(a => a);
-//     }
-
-//     public static bool OR(params bool[] args)
-//     {
-//         return args.Any(a => a);
-//     }
-// }`);
     
     fs.writeFileSync(outputFile, lines.join("\n"), "utf8");
 }
@@ -157,7 +108,7 @@ function main() {
 
   yamlToCSharp(inputYaml, outputCSharp);
 
-  console.log(`✅ C# file generated at ${outputCSharp}`);
+  console.log(`C# file generated at ${outputCSharp}`);
 }
 
 main();

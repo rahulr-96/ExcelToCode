@@ -5,7 +5,7 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function replaceInComments(csCode, key, newName) {
+function replace(csCode, key, newName) {
   const keyRegex = new RegExp(escapeRegExp(key), "g");
   const newNameRegex = new RegExp(escapeRegExp(newName), "g");
 
@@ -27,7 +27,7 @@ function replaceInComments(csCode, key, newName) {
  * Replaces all field names in a C# file using a JSON mapping,
  * and adds a comment above each replaced field with the original sheet address.
  */
-function replaceFieldsWithComments(csFilePath, jsonFilePath, outputFilePath) {
+function replaceFields(csFilePath, jsonFilePath, outputFilePath) {
   let csCode = fs.readFileSync(csFilePath, "utf-8");
   const mapping = JSON.parse(fs.readFileSync(jsonFilePath, "utf-8"));
 
@@ -40,14 +40,14 @@ function replaceFieldsWithComments(csFilePath, jsonFilePath, outputFilePath) {
     // Regex to capture the full field declaration line
     const regex = new RegExp(`(\\s*(?:double|int|float|decimal|string)\\s+)${key}(\\s*=.*;)`, "g");
 
-    csCode = csCode.replace(regex, (match, typePart, restPart) => {
+    csCode = csCode.replace(regex, (_, typePart, restPart) => {
           // Capture indentation from the start of typePart
       const indent = typePart.match(/^\s*/)?.[0] ?? "";
       return `\n${indent}// ${key}${typePart}${newName}${restPart}`;
     });
 
-    // Also replace references to the old name elsewhere in the file ignore comments
-    csCode = replaceInComments(csCode, key, newName);
+    //replace references to the old name elsewhere in the file ignore comments
+    csCode = replace(csCode, key, newName);
   }
 
   fs.writeFileSync(outputFilePath, csCode, "utf-8");
@@ -75,7 +75,7 @@ function main() {
   const jsonFilePath = path.resolve(args[1]);
   const outputFilePath = path.resolve(args[2]);
 
-  replaceFieldsWithComments(csFilePath, jsonFilePath, outputFilePath);
+  replaceFields(csFilePath, jsonFilePath, outputFilePath);
 }
 
 main();

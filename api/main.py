@@ -7,7 +7,7 @@ app = FastAPI()
 @app.post("/generate-csharp")
 async def generate_csharp(
     file: UploadFile = File(...),
-    cell_address: str = Form(None)   # Optional form field
+    cell_address: str = Form(None)
 ):
     with tempfile.TemporaryDirectory() as tmpdir:
         excel_path = os.path.join(tmpdir, file.filename)
@@ -20,7 +20,7 @@ async def generate_csharp(
         with open(excel_path, "wb") as f:
             f.write(await file.read())
 
-        # Step 1: Excel → YAML (with optional cell address)
+        # Step 1: Excel → YAML
         cmd = ["python", "../yaml-generator/generator.py", excel_path, yaml_path]
         if cell_address:
             cmd.append(cell_address)

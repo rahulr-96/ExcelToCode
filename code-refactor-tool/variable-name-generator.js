@@ -98,7 +98,6 @@ function excelToVariableMap(filePath) {
   return mapping;
 }
 
-// Example usage
 function main() {
   const args = process.argv.slice(2);
 
@@ -116,7 +115,7 @@ function main() {
   // Save as JSON
   FileSystem.writeFile(outputFile, JSON.stringify(variableMap, null, 2), (err) => {
     if (err) throw err;
-    console.log(`✅ Variable map saved to ${outputFile}`);
+    console.log(`Variable map saved to ${outputFile}`);
   });
 }
 

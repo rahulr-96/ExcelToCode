@@ -12,17 +12,16 @@ def main():
 
     excel_compiler = ExcelCompiler(input_excel)
 
-    # Optional: evaluate a specific cell
     if cell_address:
         try:
             result = excel_compiler.evaluate(cell_address)
-            print(f"📊 Evaluation of {cell_address}: {result}")
+            print(f"Evaluation of {cell_address}: {result}")
         except Exception as e:
-            print(f"❌ Failed to evaluate {cell_address}: {e}")
+            print(f"Failed to evaluate {cell_address}: {e}")
 
     # Export workbook formulas to YAML
     excel_compiler.to_file(file_types="yaml")
-    print(f"✅ YAML generated at {output_yaml}")
+    print(f"YAML generated at {output_yaml}")
 
 
 if __name__ == "__main__":
