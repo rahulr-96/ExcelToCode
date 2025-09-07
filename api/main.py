@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 import subprocess, tempfile, os
+import uuid
 
 app = FastAPI()
 
@@ -9,12 +10,13 @@ async def generate_csharp(
     file: UploadFile = File(...),
     cell_address: str = Form(None)
 ):
+    id = uuid.uuid4()
     with tempfile.TemporaryDirectory() as tmpdir:
-        excel_path = os.path.join(tmpdir, file.filename)
-        yaml_path = os.path.join(tmpdir, file.filename+".yaml")
-        csharp_path = os.path.join(tmpdir, "output.cs")
-        json_map_path = os.path.join(tmpdir, "varmap.json")
-        final_csharp_path = os.path.join("final.cs")
+        excel_path = os.path.join(tmpdir, id)
+        yaml_path = os.path.join(tmpdir, id+"_yaml"+".yaml")
+        csharp_path = os.path.join(tmpdir, id+"_output.cs")
+        json_map_path = os.path.join(tmpdir, id+"_varmap.json")
+        final_csharp_path = os.path.join(id+"_final.cs")
 
         # Save uploaded Excel file
         with open(excel_path, "wb") as f:
