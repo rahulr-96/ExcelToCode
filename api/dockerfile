@@ -1,0 +1,28 @@
+FROM python:3.11-slim
+
+# Install Node.js
+RUN apt-get update && apt-get install -y curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY api/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Node dependencies for code-refactor-tool
+COPY code-refactor-tool/package.json code-refactor-tool/package-lock.json* ./code-refactor-tool/
+RUN cd code-refactor-tool && npm install --production
+
+# Copy everything (api, yaml-generator, code-refactor-tool)
+COPY . .
+
+WORKDIR /app/api
+
+# Expose FastAPI port
+EXPOSE 5000
+
+# Run your FastAPI app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
